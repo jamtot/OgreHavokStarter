@@ -20,6 +20,8 @@ This source file is part of the
 #include "BaseApplication.h"
 #include "Physics.h"
 
+//using namespace Ogre;
+
 class TutorialApplication : public BaseApplication
 {
 public:
@@ -30,8 +32,9 @@ protected:
     virtual void createScene(void);
 	virtual void destroyScene(void);
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent&);
-private:
-	void setupPhysics(hkpWorld* physicsWorld);
+
+	Physics physics;
+	Ogre::SceneNode* cubeNode;
 };
 
 

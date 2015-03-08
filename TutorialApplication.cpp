@@ -23,37 +23,42 @@ TutorialApplication::TutorialApplication(void)
 //-------------------------------------------------------------------------------------
 TutorialApplication::~TutorialApplication(void)
 {
+	
 }
 
 //-------------------------------------------------------------------------------------
 void TutorialApplication::createScene(void)
 {
-	// create your scene here :)
+	physics.SetUp();
 
-	//ogre head example code
-	// Set the scene's ambient light
+	//add plane physically, then graphically
+	physics.addPlane();
 
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
 	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
 	Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
     plane, 1500, 1500, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
 
-	// Create an Entity
-
-	Ogre::Entity* ogreSphere = mSceneMgr->createEntity("Sphere", "sphere.mesh");
-
 	Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
 	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
 	entGround->setMaterialName("Examples/Rockwall");
 	entGround->setCastShadows(false);
 
-	// Create a SceneNode and attach the Entity to it
+	
+	//add cube physically, then graphically
+	physics.addCuboid();
 
-	Ogre::SceneNode* sphereNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("SphereNode");
+	Ogre::Entity* ogreCube = mSceneMgr->createEntity("Cube", "cube.mesh");
+	cubeNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("CubeNode");
 
-	sphereNode->attachObject(ogreSphere);
-	sphereNode->scale(0.1,0.1,0.1);
-	sphereNode->setPosition(0.0, 10.0, 0.0);
+	cubeNode->attachObject(ogreCube);
+	cubeNode->scale(0.1,0.1,0.1);
+	hkVector4 p(0,0,0);
+	p = physics.getCubePosition();
+	Ogre::Vector3 pos = Ogre::Vector3(p(0),p(1),p(2));
+	cubeNode->setPosition(pos);
+
+	
 
 	// Create a Light and set its position
 
@@ -65,63 +70,21 @@ void TutorialApplication::createScene(void)
 }
 
 void TutorialApplication::destroyScene(void){
-
+	physics.TidyUp();
 	BaseApplication::destroyScene();
 }
 
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt){
 
+	physics.Simulate(evt.timeSinceLastFrame);
+
+	hkVector4 p(0,0,0);
+	p = physics.getCubePosition();
+	Ogre::Vector3 pos = Ogre::Vector3(p(0),p(1),p(2));
+	cubeNode->setPosition(pos);
 
 	return BaseApplication::frameRenderingQueued(evt);
 }
-
-void TutorialApplication::setupPhysics(hkpWorld* physicsWorld)
-{
-	// Create the floor as a fixed box
-	{
-		hkpRigidBodyCinfo boxInfo;
-		hkVector4 boxSize(5.0f, 0.5f , 5.0f);
-		hkpBoxShape* boxShape = new hkpBoxShape(boxSize);
-		boxInfo.m_shape = boxShape;
-		boxInfo.m_motionType = hkpMotion::MOTION_FIXED;
-		boxInfo.m_position.set(0.0f, 0.0f, 0.0f);
-		boxInfo.m_restitution = 0.9f;
-
-		hkpRigidBody* floor = new hkpRigidBody(boxInfo);
-		boxShape->removeReference();
-
-		physicsWorld->addEntity(floor);
-		floor->removeReference();
-	}
-
-	// Create a moving sphere
-	{
-		hkReal sphereRadius = 0.5f;
-		hkpConvexShape* sphereShape = new hkpSphereShape(sphereRadius);
-
-		hkpRigidBodyCinfo sphereInfo;
-		sphereInfo.m_shape = sphereShape;
-		sphereInfo.m_position.set(0.0f, 5.0f, 0.0f);
-		sphereInfo.m_motionType = hkpMotion::MOTION_SPHERE_INERTIA;
-
-		// Compute mass properties
-		hkReal sphereMass = 10.0f;
-		hkMassProperties sphereMassProperties;
-		hkpInertiaTensorComputer::computeSphereVolumeMassProperties(sphereRadius, sphereMass, sphereMassProperties);
-		sphereInfo.m_inertiaTensor = sphereMassProperties.m_inertiaTensor;
-		sphereInfo.m_centerOfMass = sphereMassProperties.m_centerOfMass;
-		sphereInfo.m_mass = sphereMassProperties.m_mass;
-
-		// Create sphere RigidBody
-		hkpRigidBody* sphereRigidBody = new hkpRigidBody(sphereInfo);
-		sphereShape->removeReference();
-
-		physicsWorld->addEntity(sphereRigidBody);
-		g_ball = sphereRigidBody;
-		sphereRigidBody->removeReference();
-	}
-}
-
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
