@@ -8,11 +8,11 @@ using namespace Ogre;
 
 class OgreActor {
 public:
-	OgreActor();
+	OgreActor(SceneManager * sceneMgr);
 	~OgreActor();
-	void update(Vector3 position, Radian angleRot, Vector3 axisRot);
-	void createSphere(Vector3 position, Real size);
-	void createCuboid(Vector3 position, Real size);
+	void trackPhysObj(Vector3 position, Quaternion newOgRot);
+	void createOSphere(Vector3 position, Real size);
+	void createOCuboid(Vector3 position, Vector3 halfWidths);
 protected:
 	SceneManager * m_sceneMgr;
 	SceneNode* m_node;
