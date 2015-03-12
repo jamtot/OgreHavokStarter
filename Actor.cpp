@@ -20,7 +20,8 @@ void Actor::update(void)
 
 	hkQuaternion q; 
 	q = hkQuaternion(mBody->getRotation());
-	Radian angleRot = q.getAngle();
+	Radian angleRot;
+	angleRot = q.getAngle();
 
 	hkVector4 axis = hkVector4(0,0,0);
 	if(q.hasValidAxis())
@@ -34,20 +35,23 @@ void Actor::update(void)
 	trackPhysObj(pos, newOgRot);
 }
 
-void Actor::createSphere(Vector3 position, Real size, bool isStatic, float mass)
+void Actor::createSphere(float posX, float posY, float posZ, float size, bool isStatic, float mass)
 {
 	if (!isSet){
-		createOSphere(position, size);
-		createPSphere(hkVector4(position.x,position.y,position.z), size, isStatic, mass); 
+		Vector3 oPos(posX, posY, posZ);
+		createOSphere(oPos, size);
+		createPSphere( posX, posY, posZ, size, isStatic, mass); 
 		isSet = true;
 	}
 }
 
-void Actor::createCuboid(Vector3 position, Vector3 halfWidths, bool isStatic, float mass)
+void Actor::createCuboid(float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ, bool isStatic, float mass)
 {
 	if (!isSet){
-		createOCuboid(position, halfWidths);
-		createPCuboid(hkVector4(position.x,position.y,position.z), hkVector4(halfWidths.x, halfWidths.y, halfWidths.z), isStatic, mass);
+		Vector3 oPos(posX, posY, posZ);
+		Vector3 oHalfWidths(sizeX, sizeY, sizeZ);
+		createOCuboid(oPos, oHalfWidths);
+		createPCuboid(posX, posY, posZ, sizeX, sizeY, sizeZ, isStatic, mass);
 		isSet = true;
 	}
 }

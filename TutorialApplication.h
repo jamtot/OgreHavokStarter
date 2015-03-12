@@ -18,6 +18,7 @@ This source file is part of the
 #define __TutorialApplication_h_
 
 #include "BaseApplication.h"
+#include "Actor.h"
 #include "Physics.h"
 
 //using namespace Ogre;
@@ -34,7 +35,7 @@ protected:
 	virtual bool frameRenderingQueued(const Ogre::FrameEvent&);
 
 	Physics physics;
-	Ogre::SceneNode* cubeNode;
+	SceneNode* cubeNode;
 };
 
 

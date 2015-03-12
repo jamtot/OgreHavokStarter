@@ -10,8 +10,8 @@ public:
 	PhysicsActor(hkpWorld* pWorld);
 	~PhysicsActor();
 	hkpRigidBody* getBody(){return mBody;}
-	void createPCuboid(hkVector4 position, hkVector4 halfExtents, bool isStatic = false, float mass = 1.f);
-	void createPSphere(hkVector4 position, hkReal radius, bool isStatic = false, float mass = 1.f);
+	void createPCuboid(float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ, bool isStatic = false, float mass = 1.f);
+	void createPSphere(float posX, float posY, float posZ, float size, bool isStatic = false, float mass = 1.f);
 protected:
 	hkpWorld* physicsWorld;
 	hkpRigidBody* mBody;

@@ -9,8 +9,11 @@ PhysicsActor::~PhysicsActor(){
 	delete mBody;
 }
 
-void PhysicsActor::createPCuboid(hkVector4 position, hkVector4 halfExtents, bool isStatic, float mass){
+void PhysicsActor::createPCuboid(float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ, bool isStatic, float mass){
 	
+	hkVector4 position(posX, posY, posZ);
+	hkVector4 halfExtents(sizeX, sizeY, sizeZ);
+
 	hkpBoxShape* shape = new hkpBoxShape(halfExtents);
 
 	hkpRigidBodyCinfo bodyCinfo;
@@ -39,8 +42,9 @@ void PhysicsActor::createPCuboid(hkVector4 position, hkVector4 halfExtents, bool
 
 }
 
-void PhysicsActor::createPSphere(hkVector4 position, hkReal radius, bool isStatic, float mass){
-	
+void PhysicsActor::createPSphere(float posX, float posY, float posZ, float size, bool isStatic, float mass){
+	hkVector4 position(posX, posY, posZ);
+	hkReal radius = (size/2);
 	hkpSphereShape* shape = new hkpSphereShape(radius);
 
 	hkpRigidBodyCinfo bodyCinfo;

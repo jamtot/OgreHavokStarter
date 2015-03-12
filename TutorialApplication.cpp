@@ -44,7 +44,7 @@ void TutorialApplication::createScene(void)
 	entGround->setMaterialName("Examples/Rockwall");
 	entGround->setCastShadows(false);
 
-	
+	/*
 	//add cube physically, then graphically
 	physics.addCuboid();
 
@@ -57,6 +57,10 @@ void TutorialApplication::createScene(void)
 	p = physics.getCubePosition();
 	Ogre::Vector3 pos = Ogre::Vector3(p(0),p(1),p(2));
 	cubeNode->setPosition(pos);
+	*/
+
+	Actor * sphereActor = new Actor(mSceneMgr, physics.GetPhysicsWorld() );
+	sphereActor->createSphere(0,10,0,1);
 
 	
 
