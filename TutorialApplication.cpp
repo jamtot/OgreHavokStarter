@@ -32,17 +32,17 @@ void TutorialApplication::createScene(void)
 	physics.SetUp();
 
 	//add plane physically, then graphically
-	physics.addPlane();
+	//physics.addPlane();
 
-	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
-	Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
-	Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    plane, 1500, 1500, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
+	//mSceneMgr->setAmbientLight(Ogre::ColourValue(0.5f, 0.5f, 0.5f));
+	//Ogre::Plane plane(Ogre::Vector3::UNIT_Y, 0);
+	//Ogre::MeshManager::getSingleton().createPlane("ground", Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+ //   plane, 1500, 1500, 20, 20, true, 1, 5, 5, Ogre::Vector3::UNIT_Z);
 
-	Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
-	mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
-	entGround->setMaterialName("Examples/Rockwall");
-	entGround->setCastShadows(false);
+	//Ogre::Entity* entGround = mSceneMgr->createEntity("GroundEntity", "ground");
+	//mSceneMgr->getRootSceneNode()->createChildSceneNode()->attachObject(entGround);
+	//entGround->setMaterialName("Examples/Rockwall");
+	//entGround->setCastShadows(false);
 
 	/*
 	//add cube physically, then graphically
@@ -59,8 +59,14 @@ void TutorialApplication::createScene(void)
 	cubeNode->setPosition(pos);
 	*/
 
-	Actor * sphereActor = new Actor(mSceneMgr, physics.GetPhysicsWorld() );
-	sphereActor->createSphere(0,10,0,1);
+	sphereActor = new Actor(mSceneMgr, physics.GetPhysicsWorld() );
+	sphereActor->createSphere(0.f,10.f,0.f,5.f);
+
+	cubeActor = new Actor(mSceneMgr, physics.GetPhysicsWorld() );
+	cubeActor->createCuboid(0.5f,15.f,0.5f,5.f,4.f,3.f);
+
+	platActor = new Actor(mSceneMgr, physics.GetPhysicsWorld() );
+	platActor->createCuboid(0.f, 0.f, 0.f, 100.f,1.f,100.f, true);
 
 	
 
@@ -81,11 +87,14 @@ void TutorialApplication::destroyScene(void){
 bool TutorialApplication::frameRenderingQueued(const Ogre::FrameEvent& evt){
 
 	physics.Simulate(evt.timeSinceLastFrame);
+	sphereActor->update();
+	cubeActor->update();
+	platActor->update();
 
-	hkVector4 p(0,0,0);
+	/*hkVector4 p(0,0,0);
 	p = physics.getCubePosition();
 	Ogre::Vector3 pos = Ogre::Vector3(p(0),p(1),p(2));
-	cubeNode->setPosition(pos);
+	cubeNode->setPosition(pos);*/
 
 	return BaseApplication::frameRenderingQueued(evt);
 }

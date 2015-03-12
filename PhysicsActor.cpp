@@ -11,8 +11,10 @@ PhysicsActor::~PhysicsActor(){
 
 void PhysicsActor::createPCuboid(float posX, float posY, float posZ, float sizeX, float sizeY, float sizeZ, bool isStatic, float mass){
 	
-	hkVector4 position(posX, posY, posZ);
-	hkVector4 halfExtents(sizeX, sizeY, sizeZ);
+	hkVector4 position;
+	position.set(posX, posY, posZ);
+	hkVector4 halfExtents;
+	halfExtents.set(sizeX/2, sizeY/2, sizeZ/2);
 
 	hkpBoxShape* shape = new hkpBoxShape(halfExtents);
 
@@ -25,9 +27,9 @@ void PhysicsActor::createPCuboid(float posX, float posY, float posZ, float sizeX
 		bodyCinfo.m_qualityType = HK_COLLIDABLE_QUALITY_FIXED;// default collision quality
 	} else {
 		//  Calculate the mass properties for the shape
-		const hkReal mass = mass;
+		const hkReal hkMass = mass;
 		hkMassProperties massProperties;
-		hkpInertiaTensorComputer::computeShapeVolumeMassProperties(shape, mass, massProperties);
+		hkpInertiaTensorComputer::computeShapeVolumeMassProperties(shape, hkMass, massProperties);
 		bodyCinfo.setMassProperties(massProperties);
 	}
 
@@ -43,7 +45,7 @@ void PhysicsActor::createPCuboid(float posX, float posY, float posZ, float sizeX
 }
 
 void PhysicsActor::createPSphere(float posX, float posY, float posZ, float size, bool isStatic, float mass){
-	hkVector4 position(posX, posY, posZ);
+	hkVector4 position; position.set(posX, posY, posZ);
 	hkReal radius = (size/2);
 	hkpSphereShape* shape = new hkpSphereShape(radius);
 
@@ -56,9 +58,9 @@ void PhysicsActor::createPSphere(float posX, float posY, float posZ, float size,
 		bodyCinfo.m_qualityType = HK_COLLIDABLE_QUALITY_FIXED;// default collision quality
 	} else {
 		//  Calculate the mass properties for the shape
-		const hkReal mass = mass;
+		const hkReal hkMass = mass;
 		hkMassProperties massProperties;
-		hkpInertiaTensorComputer::computeShapeVolumeMassProperties(shape, mass, massProperties);
+		hkpInertiaTensorComputer::computeShapeVolumeMassProperties(shape, hkMass, massProperties);
 		bodyCinfo.setMassProperties(massProperties);
 	}
 

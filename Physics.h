@@ -22,8 +22,8 @@ public:
 	void addPlane(void);
 	void addCuboid(float posX = 0.0f, float posY = 10.0f, float posZ = 0.0f, float halfX =1.f, float halfY = 1.f, float halfZ = 1.f);
 	
-	hkVector4 getPlatPosition();
-	hkVector4 getCubePosition();
+	/*hkVector4 getPlatPosition();
+	hkVector4 getCubePosition();*/
 };
 
 #endif

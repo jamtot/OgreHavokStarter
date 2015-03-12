@@ -73,7 +73,7 @@ void Physics::addPlane(void){
 
 void Physics::addCuboid(float posX, float posY, float posZ, float halfX, float halfY, float halfZ){
 	
-	hkVector4 pos(posX, posY, posZ);
+	hkVector4 pos; pos.set(posX, posY, posZ);
 	//hkpRigidBody* rigidBody;
 
 	// Create a box 1 by 2 by 3
@@ -105,7 +105,7 @@ void Physics::addCuboid(float posX, float posY, float posZ, float halfX, float h
 	//rigidBody->removeReference();
 }
 
-hkVector4 Physics::getCubePosition()
+/*hkVector4 Physics::getCubePosition()
 {
 	return cubeShape->getPosition();
 }
@@ -113,4 +113,4 @@ hkVector4 Physics::getCubePosition()
 hkVector4 Physics::getPlatPosition()
 {
 	return platformShape->getPosition();
-}
+}*/

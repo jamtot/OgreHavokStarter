@@ -36,6 +36,10 @@ protected:
 
 	Physics physics;
 	SceneNode* cubeNode;
+
+	Actor * sphereActor;
+	Actor * cubeActor;
+	Actor * platActor;
 };
 
 
